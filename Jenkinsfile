@@ -41,7 +41,9 @@ pipeline {
      stage('Deploying Node App to Kubernetes') {
       steps {
         script {
-          kubernetesDeploy(configs: "nodeapp-deployment-service.yml", kubeconfigId: "kubernetes_config")
+          sh ('aws eks update-kubeconfig --name sample --region ap-south-1')
+          sh "kubectl get ns"
+          sh "kubectl apply -f nodejsapp.yaml"
         }
       }
     }

@@ -1,7 +1,7 @@
 pipeline {
   agent any
-    
-  tools {nodejs "node"}
+  
+   tools {nodejs "node"}
     
   stages {
     stage("Clone code from GitHub") {
@@ -30,12 +30,12 @@ pipeline {
         stage('Deploy Docker Image to DockerHub') {
             steps {
                 script {
-                 withCredentials([usernameColonPassword(credentialsId: 'dockerhub-pwd', variable: 'dockerhub')]) {
-                    sh 'docker login -u devopshint -p ${dockerhub-pwd}'
-                 }  
-                 sh 'docker push devopshint/node-app-1.0'
-                }
+                 withCredentials([string(credentialsId: 'devopshintdocker', variable: 'devopshintdocker')]) {
+                    sh 'docker login -u devopshint -p ${devopshintdocker}'
             }
+            sh 'docker push devopshint/node-app-1.0'
+        }
+            }   
         }
          
      stage('Deploying Node App to Kubernetes') {
